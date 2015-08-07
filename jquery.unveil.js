@@ -28,9 +28,11 @@
 
     $.fn.unveil = function (opts, callback) {
 
+        var opts = opts || {};
+
         var $w = $(window),
             th = opts.threshold || 0,
-            delay = otps.delay || 0,
+            delay = opts.delay || 0,
             retina = window.devicePixelRatio > 1,
             attrib = retina ? "data-src-retina" : "data-src",
             images = this,
