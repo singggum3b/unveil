@@ -60,11 +60,13 @@
                 return eb >= wt - th && et <= wb + th;
             });
 
-            loaded = inview.trigger("unveil");
-            images = images.not(loaded);
+            debounce(function () {
+                loaded = inview.trigger("unveil");
+                images = images.not(loaded);
+            },delay)();
         }
 
-        $w.on("scroll.unveil resize.unveil lookup.unveil", debounce(unveil, delay));
+        $w.on("scroll.unveil resize.unveil lookup.unveil",unveil);
 
         unveil();
 
