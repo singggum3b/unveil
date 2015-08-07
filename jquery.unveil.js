@@ -8,13 +8,14 @@
  * https://github.com/luis-almeida
  */
 
-;(function($) {
+;
+(function ($) {
 
     function debounce(func, wait, immediate) {
         var timeout;
-        return function() {
+        return function () {
             var context = this, args = arguments;
-            var later = function() {
+            var later = function () {
                 timeout = null;
                 if (!immediate) func.apply(context, args);
             };
@@ -25,48 +26,48 @@
         };
     }
 
-  $.fn.unveil = function(opts, callback) {
+    $.fn.unveil = function (opts, callback) {
 
-    var $w = $(window),
-        th = opts.threshold || 0,
-        delay = otps.delay || 0,
-        retina = window.devicePixelRatio > 1,
-        attrib = retina? "data-src-retina" : "data-src",
-        images = this,
-        loaded;
+        var $w = $(window),
+            th = opts.threshold || 0,
+            delay = otps.delay || 0,
+            retina = window.devicePixelRatio > 1,
+            attrib = retina ? "data-src-retina" : "data-src",
+            images = this,
+            loaded;
 
-    this.one("unveil", function() {
-      var source = this.getAttribute(attrib);
-      source = source || this.getAttribute("data-src");
-      if (source) {
-        this.setAttribute("src", source);
-        if (typeof callback === "function") callback.call(this);
-      }
-    });
+        this.one("unveil", function () {
+            var source = this.getAttribute(attrib);
+            source = source || this.getAttribute("data-src");
+            if (source) {
+                this.setAttribute("src", source);
+                if (typeof callback === "function") callback.call(this);
+            }
+        });
 
-    function unveil() {
-      var inview = images.filter(function() {
-        var $e = $(this);
-        if ($e.is(":hidden")) return;
+        function unveil() {
+            var inview = images.filter(function () {
+                var $e = $(this);
+                if ($e.is(":hidden")) return;
 
-        var wt = $w.scrollTop(),
-            wb = wt + $w.height(),
-            et = $e.offset().top,
-            eb = et + $e.height();
+                var wt = $w.scrollTop(),
+                    wb = wt + $w.height(),
+                    et = $e.offset().top,
+                    eb = et + $e.height();
 
-        return eb >= wt - th && et <= wb + th;
-      });
+                return eb >= wt - th && et <= wb + th;
+            });
 
-      loaded = inview.trigger("unveil");
-      images = images.not(loaded);
-    }
+            loaded = inview.trigger("unveil");
+            images = images.not(loaded);
+        }
 
-    $w.on("scroll.unveil resize.unveil lookup.unveil", debounce(unveil,delay));
+        $w.on("scroll.unveil resize.unveil lookup.unveil", debounce(unveil, delay));
 
-    unveil();
+        unveil();
 
-    return this;
+        return this;
 
-  };
+    };
 
 })(window.jQuery || window.Zepto);
